@@ -59,27 +59,35 @@ class CRM
 
 	def display_all_contacts 
 		@rolodex.all.each do |contact|
-			puts "#{contact.first_name} #{contact.last_name} #{contact.email} #{contact.notes}" 
+			puts "contact ID: #{contact.id}, #{contact.first_name} #{contact.last_name} #{contact.email} #{contact.notes}" 
 		end
 	end
 
 	def edit_contact
 		puts "Editing a Contact"
-		puts "Enter first name: "
-		first_name = gets.chomp
-		contact = @rolodex.find_user(first_name).first 
-		puts contact
-		puts "Please confirm that you would like to edit #{contact.first_name} #{contact.last_name} [Y or N]"
+		puts "Enter id: "
+		id = gets.chomp.to_i
+
+		user = @rolodex.find_user(id)
+		contact = user[0]
+
+		puts "You have selected to edit #{id}"
+		puts "Please confirm [Y or N]: "
 		input = gets.chomp
-			if input == "Y"
-				puts "What would like to edit?"
-				input_option = gets.chomp
-				puts "Enter new value: "
-				new_value = gets.chomp
-				@rolodex.edit_contact(new_value, input_option, contact)
-			if input == "N"
+
+		if input.upcase == "Y"
+			puts "What would like to edit?"
+			input_option = gets.chomp
+
+			puts "Enter new value: "
+			new_value = gets.chomp
+
+			@rolodex.edit_contact(new_value, input_option, contact)
+
+			if input.upcase == "N"
 				return 
-			else puts "Invalid option"
+			else
+				puts "Invalid option"
 			end
 		end
 	end

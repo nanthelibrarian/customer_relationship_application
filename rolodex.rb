@@ -22,22 +22,23 @@ class Rolodex
 		@contacts
 	end
 
-	def find_user(first_name)
+	def find_user(id)
 		@contacts.select do |contact|  
-			first_name == contact.first_name
+			id == contact.id 
 		end 
 	end
 
 	def edit_contact(new_value, input_option, contact)
-			if input_option == "first_name"
-				contact.first_name = new_value
-			elsif input_option == "last_name"
-				contact.last_name = new_value
-			elsif input_option == "email"
-				contact.email = new_value
-			elsif input_option == "notes"
-				contact.notes = contact.notes + new_value
-			else puts "Invalid option"
+		if input_option == "first_name"
+			contact.first_name = new_value
+		elsif input_option == "last_name"
+			contact.last_name = new_value
+		elsif input_option == "email"
+			contact.email = new_value
+		elsif input_option == "notes"
+			contact.notes = contact.notes + new_value
+		else
+			puts "Invalid option"
 		end			
 	end 
 
