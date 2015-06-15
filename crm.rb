@@ -1,11 +1,15 @@
+require_relative('contact.rb')
+require_relative('rolodex.rb')
+
 class CRM
 	def initialize(name)
 		@name = name 
 		puts "This CRM is named " + name 
+		@rolodex = Rolodex.new
 	end
 
 	def print_main_menu
-		# puts "Welcome to #{@name}"
+		puts "Welcome to #{@name}"
 		puts "[1] Add a contact"
 		puts "[2] Modify a contact"
 		puts "[3] Display all contacts"
@@ -19,6 +23,7 @@ class CRM
 		print_main_menu 
 		user_input = gets.chomp.to_i
 		call_option(user_input)
+		main_menu
 	end
 
 	def call_option(user_input)
@@ -28,13 +33,61 @@ class CRM
 		display_attribute if user_input == 4
 		delete_contact if user_input == 5
 		exit if user_input == 6
-		puts "Invalid option." if user_input != [1, 2, 3, 4, 5, 6]
+		puts "Invalid option." if user_input > 6 or user_input < 1 
+	end
+
+	def add_contact
+		puts "Adding a Contact"
+		puts "Enter first name: "
+		first_name = gets.chomp 
+		puts "Enter last name: "
+		last_name = gets.chomp
+		puts "Enter email: "
+		email = gets.chomp
+		puts "Enter notes: "
+		notes = gets.chomp 
+		contact = Contact.new(first_name, last_name, email, notes)
+		@rolodex.add_contact(contact)
+	end 
+
+	# def edit_contact
+	# 	puts "Enter first name: "
+	# 	first_name = gets.chomp
+
+
+	# end 
+
+	def display_all_contacts 
+		@rolodex.all.each do |contact|
+			puts "#{contact.first_name} #{contact.last_name} #{contact.email} #{contact.notes}" 
+		end
+	end
+
+	def edit_contact
+		puts "Editing a Contact"
+		puts "Enter first name: "
+		first_name = gets.chomp
+		contact = @rolodex.find_user(first_name).first 
+		puts contact
+		puts "Please confirm that you would like to edit #{contact.first_name} #{contact.last_name} [Y or N]"
+		input = gets.chomp
+			if input == "Y"
+				puts "What would like to edit?"
+				input_option = gets.chomp
+				puts "Enter new value: "
+				new_value = gets.chomp
+				@rolodex.edit_contact(new_value, input_option, contact)
+			if input == "N"
+				return 
+			else puts "Invalid option"
+			end
+		end
 	end
 end 
 
 
 wood_crm_app = CRM.new("Nancy's CRM")
-wood_crm_app.print_main_menu
+wood_crm_app.main_menu
 
 
 
